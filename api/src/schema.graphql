@@ -1,96 +1,59 @@
-scalar Point
-scalar DateTime
-scalar PointInput
+scalar Date
 
-type User {
-  userId: ID!
-  name: String
-  reviews: [Review] @relationship(type: "WROTE", direction: OUT)
-  avgStars: Float
-    @cypher(
-      statement: "MATCH (this)-[:WROTE]->(r:Review) RETURN toFloat(avg(r.stars))"
-    )
-  numReviews: Int
-    @cypher(statement: "MATCH (this)-[:WROTE]->(r:Review) RETURN COUNT(r)")
-  recommendations(first: Int = 3): [Business]
-    @cypher(
-      statement: "MATCH (this)-[:WROTE]->(r:Review)-[:REVIEWS]->(:Business)<-[:REVIEWS]-(:Review)<-[:WROTE]-(:User)-[:WROTE]->(:Review)-[:REVIEWS]->(rec:Business) WHERE NOT EXISTS( (this)-[:WROTE]->(:Review)-[:REVIEWS]->(rec) ) WITH rec, COUNT(*) AS num ORDER BY num DESC LIMIT $first RETURN rec"
-    )
+type BrandedProduct {
+  brandedProductID: ID!
+  brandedProductName: String
+  medicinalProducts: [MedicinalProduct]
 }
 
-type Business {
-  businessId: ID!
-  name: String!
-  address: String
-  city: String
-  state: String
-  location: Point
-  avgStars: Float
-    @cypher(
-      statement: "MATCH (this)<-[:REVIEWS]-(r:Review) RETURN coalesce(avg(r.stars),0.0)"
-    )
-  reviews: [Review] @relationship(type: "REVIEWS", direction: IN)
-  categories: [Category] @relationship(type: "IN_CATEGORY", direction: OUT)
+type MedicinalProduct {
+  medicinalProductID: ID!
+  medicinalProductName: String
+  packSizes: [PackSize]
+  pricing: Pricing
 }
 
-type Review {
-  reviewId: ID!
-  stars: Float
-  text: String
-  date: DateTime
-  business: Business @relationship(type: "REVIEWS", direction: OUT)
-  user: User @relationship(type: "WROTE", direction: IN)
+type PackSize {
+  packID: ID!
+  units: Int
+  basePrice: Float
 }
 
-type Category {
-  name: ID!
-  businesses: [Business] @relationship(type: "IN_CATEGORY", direction: IN)
+type Pricing {
+  pricingID: ID!
+  OSAfter12Months: Float
+  PFSAfter9Months: Float
+  noOSBefore12Months: Float
+  noPFSBefore9Months: Float
 }
 
-type RatingCount @exclude {
-  stars: Float!
-  count: Int!
+type Treatment {
+  treatmentID: ID!
+  treatmentStart: Date!
 }
 
-type Mutation {
-  mergeBusinessCategory(categories: [String!]!, businessId: ID!): Business
-    @cypher(
-      statement: "MATCH (b:Business {businessId: $businessId}) UNWIND $categories AS cat MERGE (c:Category {name: cat}) MERGE (b)-[:IN_CATEGORY]->(c) RETURN b"
-    )
-  mergeUser(name: String!, userId: ID!): User
-    @cypher(
-      statement: """
-      MERGE (u:User {userId: $userId})
-      ON CREATE SET u.name = $name
-      RETURN u
-      """
-    )
-  mergeBusiness(
-    businessId: ID!
-    name: String!
-    address: String!
-    city: String!
-    state: String!
-    latitude: Float!
-    longitude: Float!
-  ): Business
-    @cypher(
-      statement: """
-      MERGE (b:Business {businessId: $businessId})
-      ON CREATE SET b.name = $name,
-                    b.address = $address,
-                    b.city = $city,
-                    b.state = $state,
-                    b.location = Point({latitude: $latitude, longitude: $longitude})
-      RETURN b
-      """
-    )
+type Patient {
+  patientID: ID!
+  age: Int!
+  cancerStage: Int!
+  undergoesTreatment: [Treatment!]!
+    @relationship(type: "UNDERGOES_TREATMENT", direction: OUT)
+  hasPFSInfo: [PFS_Info!]!
+  hasOSInfo: [OS_Info!]!
+}
+
+type OS_Info {
+  osID: ID!
+  osDuration: Int!
+}
+
+type PFS_Info {
+  pfsID: ID!
+  pfsDuration: Int!
 }
 
 type Query {
-  userCount: Int! @cypher(statement: "MATCH (u:User) RETURN COUNT(u)")
-  ratingsCount: [RatingCount]
-    @cypher(
-      statement: "MATCH (r:Review) WITH r.stars AS stars, COUNT(*) AS count ORDER BY stars RETURN {stars: stars, count: count}"
-    )
+  patient(patientID: ID!): Patient
+    @cypher(statement: "MATCH (p:Patient {patientID: $patientID}) RETURN p")
+  patients: [Patient!]! @cypher(statement: "MATCH (p:Patient) RETURN p")
 }
