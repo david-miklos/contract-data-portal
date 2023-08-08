@@ -8,8 +8,9 @@ export const GET_BRANDED_PRODUCTS = gql`
     }
   }
 `;
+
 export const CREATE_PATIENTS = gql`
-  mutation CreatePatients($input: PatientCreateInput!) {
+  mutation createPatients($input: [PatientCreateInput!]!) {
     createPatients(input: $input) {
       patients {
         id

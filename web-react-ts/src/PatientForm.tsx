@@ -78,8 +78,8 @@ function PatientForm() {
           variables: {
             input: {
               id: uuidv4(),
-              age: formData.age,
-              cancerStage: formData.cancerStage,
+              age: parseInt(formData.age),
+              cancerStage: 0,
               name: formData.name,
               treatments: {
                 create: {
@@ -91,16 +91,10 @@ function PatientForm() {
                 },
               },
               osInfos: {
-                create: {
-                  id: uuidv4(),
-                  duration: formData.osInfo,
-                },
+                create: { id: uuidv4(), duration: parseInt(formData.osInfo) },
               },
               pfsInfos: {
-                create: {
-                  id: uuidv4(),
-                  duration: formData.pfsInfo,
-                },
+                create: { id: uuidv4(), duration: parseInt(formData.pfsInfo) },
               },
             },
           },
@@ -228,12 +222,12 @@ function PatientForm() {
         </form>
       </div>
       <div>
-        {patients.map((patient) => (
+        {/* {patients.map((patient) => (
           <div key={patient.id}>
             <div>{patient.name}</div>
             <div>{patient.id}</div>
           </div>
-        ))}
+        ))} */}
       </div>
     </div>
   );
