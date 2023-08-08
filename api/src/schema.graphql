@@ -1,59 +1,67 @@
-scalar Date
-
 type BrandedProduct {
-  brandedProductID: ID!
-  brandedProductName: String
-  medicinalProducts: [MedicinalProduct]
+  id: String!
+  name: String!
+  medicinalProducts: [MedicinalProduct!]!
+    @relationship(type: "BELONGS_TO_PRODUCT", direction: IN)
+  treatment: [Treatment!]! @relationship(type: "USES_PRODUCT", direction: IN)
 }
 
 type MedicinalProduct {
-  medicinalProductID: ID!
-  medicinalProductName: String
-  packSizes: [PackSize]
-  pricing: Pricing
-}
-
-type PackSize {
-  packID: ID!
-  units: Int
-  basePrice: Float
-}
-
-type Pricing {
-  pricingID: ID!
-  OSAfter12Months: Float
-  PFSAfter9Months: Float
-  noOSBefore12Months: Float
-  noPFSBefore9Months: Float
-}
-
-type Treatment {
-  treatmentID: ID!
-  treatmentStart: Date!
-}
-
-type Patient {
-  patientID: ID!
-  age: Int!
-  cancerStage: Int!
-  undergoesTreatment: [Treatment!]!
-    @relationship(type: "UNDERGOES_TREATMENT", direction: OUT)
-  hasPFSInfo: [PFS_Info!]!
-  hasOSInfo: [OS_Info!]!
+  brandedProducts: [BrandedProduct!]!
+    @relationship(type: "BELONGS_TO_PRODUCT", direction: OUT)
+  packSizes: [PackSize!]! @relationship(type: "HAS_PACK_SIZE", direction: OUT)
+  id: String!
+  name: String!
+  pricings: [Pricing!]! @relationship(type: "PRICED_WITH", direction: OUT)
 }
 
 type OS_Info {
-  osID: ID!
-  osDuration: Int!
+  duration: BigInt!
+  id: String!
+  patients: [Patient!]! @relationship(type: "HAS_OS_INFO", direction: IN)
 }
 
 type PFS_Info {
-  pfsID: ID!
-  pfsDuration: Int!
+  duration: BigInt!
+  id: String!
+  patients: [Patient!]! @relationship(type: "HAS_PFS_INFO", direction: IN)
 }
 
-type Query {
-  patient(patientID: ID!): Patient
-    @cypher(statement: "MATCH (p:Patient {patientID: $patientID}) RETURN p")
-  patients: [Patient!]! @cypher(statement: "MATCH (p:Patient) RETURN p")
+type PackSize {
+  basePrice: BigInt!
+  id: String!
+  medicinalProducts: [MedicinalProduct!]!
+    @relationship(type: "HAS_PACK_SIZE", direction: IN)
+  units: BigInt!
+}
+
+type Patient {
+  age: BigInt!
+  cancerStage: BigInt!
+  osInfos: [OS_Info!]! @relationship(type: "HAS_OS_INFO", direction: OUT)
+  pfsInfos: [PFS_Info!]! @relationship(type: "HAS_PFS_INFO", direction: OUT)
+  id: String!
+  name: String
+  stage: BigInt
+  treatments: [Treatment!]!
+    @relationship(type: "UNDERGOES_TREATMENT", direction: OUT)
+}
+
+type Pricing {
+  OSAfter12Months: Float!
+  PFSAfter9Months: Float!
+  id: String!
+  medicinalProducts: [MedicinalProduct!]!
+    @relationship(type: "PRICED_WITH", direction: IN)
+  noOSBefore12Months: Float!
+  noPFSBefore9Months: Float!
+}
+
+type Treatment {
+  id: String!
+  patients: [Patient!]!
+    @relationship(type: "UNDERGOES_TREATMENT", direction: IN)
+  startDate: Date!
+  brandedProducts: [BrandedProduct!]!
+    @relationship(type: "USES_PRODUCT", direction: OUT)
 }
