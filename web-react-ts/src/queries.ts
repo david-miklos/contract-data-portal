@@ -21,10 +21,6 @@ export const CREATE_PATIENTS = gql`
         cancerStage
         osInfo
         pfsInfo
-        treatments {
-          id
-          startDate
-        }
       }
     }
   }
@@ -71,6 +67,13 @@ export const GET_CONTRACT = gql`
         id
         name
       }
+      pricings {
+        OSAfter
+        PFSAfter
+        id
+        noOSBefore
+        noPFSBefore
+      }
       patients {
         id
         name
@@ -78,6 +81,25 @@ export const GET_CONTRACT = gql`
         cancerStage
         osInfo
         pfsInfo
+        treatments {
+          id
+          startDate
+          brandedProducts {
+            id
+            name
+            osInfo
+            pfsInfo
+            medicinalProducts {
+              id
+              name
+              packSizes {
+                id
+                basePrice
+                units
+              }
+            }
+          }
+        }
       }
     }
   }
@@ -122,8 +144,21 @@ export const MATCH_PATIENTS = gql`
 `;
 
 export const GET_PATIENTS = gql`
-  query getAllPatients {
+  query GetAllPatients {
     patients {
+      id
+      name
+      age
+      cancerStage
+      osInfo
+      pfsInfo
+    }
+  }
+`;
+
+export const GET_PATIENT = gql`
+  query GetPatient($where: PatientWhere) {
+    patient(where: $where) {
       id
       name
       age
@@ -134,7 +169,19 @@ export const GET_PATIENTS = gql`
         id
         startDate
         brandedProducts {
+          id
           name
+          osInfo
+          pfsInfo
+          medicinalProducts {
+            id
+            name
+            packSizes {
+              id
+              basePrice
+              units
+            }
+          }
         }
       }
     }

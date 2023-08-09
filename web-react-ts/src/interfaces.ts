@@ -3,11 +3,13 @@ export interface BrandedProduct {
   name: string;
   osInfo: number;
   pfsInfo: number;
+  medicinalProducts: MedicinalProduct[];
 }
 
 export interface MedicinalProduct {
   id: string;
   name: string;
+  packSizes: PackSize[];
 }
 
 export interface PackSize {
@@ -41,6 +43,7 @@ export interface PFS_Info {
 export interface Treatment {
   id: string;
   startDate: Date;
+  brandedProducts: BrandedProduct[];
 }
 
 export interface EnrolmentCriteria {
@@ -67,6 +70,7 @@ export interface Contract {
   enrolmentCriteria: EnrolmentCriteria[];
   id: string;
   parties: Party[];
+  patients: Patient[];
   pricings: Pricing[];
 }
 

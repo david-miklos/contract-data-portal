@@ -50,8 +50,7 @@ function Contract() {
 
   const [matchPatients] = useMutation(MATCH_PATIENTS, {
     onCompleted: () => {
-      // Refetch patient data query
-      // refetchPatients();
+      console.log("Patients were matched");
     },
   });
 
@@ -92,7 +91,6 @@ function Contract() {
   if (!getContractsData) return <p>Something went wrong</p>;
 
   const contracts = getContractsData.contracts;
-  console.log(contracts);
 
   const handleParty1InputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const selectedParty1 = event.target.value;

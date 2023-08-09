@@ -231,11 +231,30 @@ function PatientForm() {
       <div className="flex space-x-6">
         {patients.map((patient) => (
           <div key={patient.id}>
-            <div>{patient.name}</div>
-            <div>{patient.id}</div>
-            <div>{patient.cancerStage}</div>
-            <div>{patient.osInfo}</div>
-            <div>{patient.pfsInfo}</div>
+            <div className="flex space-x-2">
+              <div>ID:</div>
+              <div>{patient.id}</div>
+            </div>
+            <div className="flex space-x-2">
+              <div>Name:</div>
+              <div>{patient.name}</div>
+            </div>
+            <div className="flex space-x-2">
+              <div>Age:</div>
+              <div>{patient.age}</div>
+            </div>
+            <div className="flex space-x-2">
+              <div>Cancer Stage:</div>
+              <div>{patient.cancerStage}</div>
+            </div>
+            <div className="flex space-x-2">
+              <div>OS Info:</div>
+              <div>{patient.osInfo}</div>
+            </div>
+            <div className="flex space-x-2">
+              <div>PFS Info:</div>
+              <div>{patient.pfsInfo}</div>
+            </div>
           </div>
         ))}
       </div>
