@@ -15,12 +15,18 @@ function PatientForm() {
     loading: getPatientsLoading,
     error: getPatientsError,
     data: getPatientsData,
+    refetch: refetchPatients,
   } = useQuery<APIPatients>(GET_PATIENTS);
 
   const [
     createPatient,
     { loading: createPatientLoading, error: createPatientError },
-  ] = useMutation(CREATE_PATIENTS);
+  ] = useMutation(CREATE_PATIENTS, {
+    onCompleted: () => {
+      // Refetch patient data query
+      refetchPatients();
+    },
+  });
 
   const [formData, setFormData] = useState({
     name: "",
@@ -73,7 +79,6 @@ function PatientForm() {
       formData.startDate
     ) {
       try {
-        console.log(formData);
         const result = await createPatient({
           variables: {
             input: {
@@ -100,7 +105,7 @@ function PatientForm() {
           },
         });
 
-        console.log("Mutation result:", result.data);
+        console.log("Patient has been created:", result.data);
 
         // Reset the form fields after successful submission
         setFormData({
@@ -152,7 +157,7 @@ function PatientForm() {
             <input
               className="border border-slate-700 rounded-mg"
               type="number"
-              min={1}
+              min={0}
               id="cancerStage"
               name="cancerStage"
               value={formData.cancerStage === null ? "" : formData.cancerStage}
@@ -222,12 +227,12 @@ function PatientForm() {
         </form>
       </div>
       <div>
-        {/* {patients.map((patient) => (
+        {patients.map((patient) => (
           <div key={patient.id}>
             <div>{patient.name}</div>
             <div>{patient.id}</div>
           </div>
-        ))} */}
+        ))}
       </div>
     </div>
   );

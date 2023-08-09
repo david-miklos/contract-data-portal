@@ -34,6 +34,18 @@ export const CREATE_PATIENTS = gql`
   }
 `;
 
+export const GET_CONTRACTS = gql`
+  query GetContracts($where: ContractWhere) {
+    contracts(where: $where) {
+      id
+      enrolmentCriteria {
+        maxAge
+        cancerStages
+      }
+    }
+  }
+`;
+
 export const GET_PATIENTS = gql`
   query getAllPatients {
     patients {

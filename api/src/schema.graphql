@@ -16,35 +16,59 @@ type MedicinalProduct {
 }
 
 type OS_Info {
-  duration: BigInt!
+  duration: Int!
   id: String!
   patients: [Patient!]! @relationship(type: "HAS_OS_INFO", direction: IN)
 }
 
 type PFS_Info {
-  duration: BigInt!
+  duration: Int!
   id: String!
   patients: [Patient!]! @relationship(type: "HAS_PFS_INFO", direction: IN)
 }
 
 type PackSize {
-  basePrice: BigInt!
+  basePrice: Int!
   id: String!
   medicinalProducts: [MedicinalProduct!]!
     @relationship(type: "HAS_PACK_SIZE", direction: IN)
-  units: BigInt!
+  units: Int!
 }
 
 type Patient {
-  age: BigInt!
-  cancerStage: BigInt!
+  age: Int!
+  cancerStage: Int!
   osInfos: [OS_Info!]! @relationship(type: "HAS_OS_INFO", direction: OUT)
   pfsInfos: [PFS_Info!]! @relationship(type: "HAS_PFS_INFO", direction: OUT)
   id: String!
   name: String
-  stage: BigInt
+  stage: Int
   treatments: [Treatment!]!
     @relationship(type: "UNDERGOES_TREATMENT", direction: OUT)
+  contracts: [Contract] @relationship(type: "MATCHED_TO", direction: OUT)
+}
+
+type Contract {
+  duration: Int!
+  enrolmentCriteria: [EnrolmentCriteria!]!
+    @relationship(type: "ENROLLED_UNDER", direction: OUT)
+  id: String!
+  parties: [Party!]! @relationship(type: "PARTY_INVOLVED", direction: OUT)
+  patientsMatchedTo: [Patient!]!
+    @relationship(type: "MATCHED_TO", direction: IN)
+}
+
+type EnrolmentCriteria {
+  cancerStages: [Int]!
+  contracts: [Contract!]! @relationship(type: "ENROLLED_UNDER", direction: IN)
+  id: String!
+  maxAge: Int!
+}
+
+type Party {
+  id: String!
+  name: String!
+  contracts: [Contract!]! @relationship(type: "PARTY_INVOLVED", direction: IN)
 }
 
 type Pricing {
