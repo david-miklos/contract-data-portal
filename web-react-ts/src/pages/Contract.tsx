@@ -7,16 +7,15 @@ import {
   CreateContractResult,
 } from "../interfaces";
 import {
-  CREATE_CONTRACTS,
   GET_BRANDED_PRODUCTS,
   GET_CONTRACTS,
   GET_MEDICINAL_PRODUCTS,
   GET_PACK_SIZES,
-  MATCH_PATIENTS,
 } from "../queries";
 import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
 import { v4 as uuidv4 } from "uuid";
 import { Link, useLocation } from "react-router-dom";
+import { CREATE_CONTRACTS, MATCH_PATIENTS } from "../mutations";
 
 function Contract() {
   const {
@@ -41,7 +40,10 @@ function Contract() {
     GET_PACK_SIZES
   );
 
-  const [createContract] = useMutation<CreateContractResult>(CREATE_CONTRACTS, {
+  const [
+    createContract,
+    { loading: createContractLoading },
+  ] = useMutation<CreateContractResult>(CREATE_CONTRACTS, {
     onCompleted: () => {
       // Refetch contracts query
       refetchContracts();
@@ -319,15 +321,19 @@ function Contract() {
 
   return (
     <>
-      <div>
-        <div>
-          <form className="flex flex-col space-y-2" onSubmit={handleSubmit}>
+      <div className="flex flex-col space-y-6">
+        <div className=" border rounded p-10 shadow-sm bg-slate-100">
+          <form className="w-1/3 mx-auto flex flex-col" onSubmit={handleSubmit}>
             <div>
-              <p>Parties</p>
-              <div className="flex space-x-4">
-                <label htmlFor="party1">Party1:</label>
+              <div>
+                <label
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  htmlFor="party1"
+                >
+                  Party1:
+                </label>
                 <input
-                  className="border border-slate-700 rounded-mg"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
                   type="text"
                   id="party1"
                   name="party1"
@@ -335,10 +341,15 @@ function Contract() {
                   onChange={handleParty1InputChange}
                 />
               </div>
-              <div className="flex space-x-4">
-                <label htmlFor="party2">Party2:</label>
+              <div>
+                <label
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  htmlFor="party2"
+                >
+                  Party2:
+                </label>
                 <input
-                  className="border border-slate-700 rounded-mg"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
                   type="text"
                   id="party2"
                   name="party2"
@@ -348,11 +359,15 @@ function Contract() {
               </div>
             </div>
             <div>
-              <p>Product</p>
-              <div className="flex space-x-4">
-                <label htmlFor="selectedProductID">Product:</label>
+              <div>
+                <label
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  htmlFor="selectedProductID"
+                >
+                  Product:
+                </label>
                 <select
-                  className="border border-slate-700 rounded-mg"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 "
                   id="selectedProductID"
                   name="selectedProductID"
                   value={selectedProductID}
@@ -367,10 +382,15 @@ function Contract() {
                 </select>
               </div>
               {selectedProductID && medicinalProducts && (
-                <div className="flex space-x-4">
-                  <label htmlFor="selectedProductID">Medical Product:</label>
+                <div>
+                  <label
+                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    htmlFor="selectedProductID"
+                  >
+                    Medical Product:
+                  </label>
                   <select
-                    className="border border-slate-700 rounded-mg"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 "
                     id="selectedMedicalProductID"
                     name="selectedMedicalProductID"
                     value={selectedMedicinalProductID}
@@ -386,10 +406,15 @@ function Contract() {
                 </div>
               )}
               {selectedMedicinalProductID && packSizes && (
-                <div className="flex space-x-4">
-                  <label htmlFor="selectedProductID">Pack sizes:</label>
+                <div>
+                  <label
+                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    htmlFor="selectedProductID"
+                  >
+                    Pack sizes:
+                  </label>
                   <select
-                    className="border border-slate-700 rounded-mg"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 "
                     id="selectedPackSizeID"
                     name="selectedPackSizeID"
                     value={selectedPackSizeID}
@@ -402,7 +427,7 @@ function Contract() {
                       </option>
                     ))}
                   </select>
-                  <div>
+                  <div className="flex justify-center items-center mt-3">
                     CHF
                     {
                       packSizes.find(
@@ -414,11 +439,15 @@ function Contract() {
               )}
             </div>
             <div>
-              <p>Duration</p>
-              <div className="flex space-x-4">
-                <label htmlFor="duration">Duration (months):</label>
+              <div>
+                <label
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  htmlFor="duration"
+                >
+                  Duration (months):
+                </label>
                 <input
-                  className="border border-slate-700 rounded-mg"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
                   type="number"
                   min={1}
                   id="duration"
@@ -429,11 +458,15 @@ function Contract() {
               </div>
             </div>
             <div>
-              <p>Enrolment criteria</p>
-              <div className="flex space-x-4">
-                <label htmlFor="maxAge">Max age:</label>
+              <div>
+                <label
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  htmlFor="maxAge"
+                >
+                  Max age:
+                </label>
                 <input
-                  className="border border-slate-700 rounded-mg"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
                   type="number"
                   min={1}
                   id="maxAge"
@@ -442,25 +475,27 @@ function Contract() {
                   onChange={handleMaxAgeInputChange}
                 />
               </div>
-              <div className="flex space-x-4">
-                <label>
+              <div>
+                <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                   From:
                   <input
                     type="number"
                     min={0}
                     id="start"
                     name="start"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
                     value={start}
                     onChange={handleStartChange}
                   />
                 </label>
-                <label>
+                <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                   To:
                   <input
                     type="number"
                     min={start + 1}
                     id="end"
                     name="end"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
                     value={end}
                     onChange={handleEndChange}
                   />
@@ -468,9 +503,11 @@ function Contract() {
               </div>
             </div>
             <div>
-              <p>Pricing</p>
-              <div className="flex space-x-4">
-                <label htmlFor="osAfter">
+              <div>
+                <label
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  htmlFor="osAfter"
+                >
                   OS After{" "}
                   {
                     brandedProducts.find(
@@ -480,7 +517,7 @@ function Contract() {
                   (months):
                 </label>
                 <input
-                  className="border border-slate-700 rounded-mg"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
                   type="text"
                   id="osAfter"
                   name="osAfter"
@@ -488,8 +525,11 @@ function Contract() {
                   onChange={handleOsAfterInputChange}
                 />
               </div>
-              <div className="flex space-x-4">
-                <label htmlFor="noOsBefore">
+              <div>
+                <label
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  htmlFor="noOsBefore"
+                >
                   No OS Before{" "}
                   {
                     brandedProducts.find(
@@ -499,7 +539,7 @@ function Contract() {
                   (months):
                 </label>
                 <input
-                  className="border border-slate-700 rounded-mg"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
                   type="text"
                   id="noOsBefore"
                   name="noOsBefore"
@@ -507,8 +547,11 @@ function Contract() {
                   onChange={handleNoOsBeforeInputChange}
                 />
               </div>
-              <div className="flex space-x-4">
-                <label htmlFor="pfsAfter">
+              <div>
+                <label
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  htmlFor="pfsAfter"
+                >
                   PFS After{" "}
                   {
                     brandedProducts.find(
@@ -518,7 +561,7 @@ function Contract() {
                   (months):
                 </label>
                 <input
-                  className="border border-slate-700 rounded-mg"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
                   type="text"
                   id="pfsAfter"
                   name="pfsAfter"
@@ -526,8 +569,11 @@ function Contract() {
                   onChange={handlePfsAfterInputChange}
                 />
               </div>
-              <div className="flex space-x-4">
-                <label htmlFor="noPfsBefore">
+              <div>
+                <label
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  htmlFor="noPfsBefore"
+                >
                   No PFS Before{" "}
                   {
                     brandedProducts.find(
@@ -537,7 +583,7 @@ function Contract() {
                   (months):
                 </label>
                 <input
-                  className="border border-slate-700 rounded-mg"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
                   type="text"
                   id="noPfsBefore"
                   name="noPfsBefore"
@@ -548,23 +594,33 @@ function Contract() {
             </div>
 
             <button
-              className="bg-slate-700 text-slate-100"
+              className="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mt-6"
               type="submit"
               disabled={false}
             >
-              Create contract
+              {createContractLoading ? "Creating..." : "Create Contract"}
             </button>
-            {/* {createPatientError && <p>Error: {createPatientError.message}</p>} */}
           </form>
         </div>
-        <div className="flex space-x-6">
+        <div className="flex space-x-6 items-center justify-center">
           {contracts.map((contract) => (
-            <div key={contract.id}>
-              <div>{contract.id}</div>
-              <div>{contract.parties[0].name}</div>
-              <div>{contract.parties[1].name}</div>
-
-              <Link to={`${location.pathname}/details/${contract.id}`}>
+            <div key={contract.id} className="border rounded-lg shadow-sm p-6">
+              <div className="flex space-x-2">
+                <div className="font-semibold">ID:</div>
+                <div>{contract.id}</div>
+              </div>
+              <div className="flex space-x-2">
+                <div className="font-semibold">Party1:</div>
+                <div>{contract.parties[0].name}</div>
+              </div>
+              <div className="flex space-x-2">
+                <div className="font-semibold">Party2: </div>
+                <div>{contract.parties[1].name}</div>
+              </div>
+              <Link
+                to={`${location.pathname}/details/${contract.id}`}
+                className="font-medium text-slate-400 underline hover:no-underline mt-1 flex justify-end"
+              >
                 Details
               </Link>
             </div>

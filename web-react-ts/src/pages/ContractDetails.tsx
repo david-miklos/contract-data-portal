@@ -28,26 +28,32 @@ function ContractDetails() {
 
   return (
     <div>
-      <h1> Details</h1>
-      <h2>{id}</h2>
-      <h3>Enrolment criteria</h3>
-      <div className="flex space-x-2">
-        <div>Max Age:</div>
-        <div>{contract.enrolmentCriteria[0].maxAge}</div>
-      </div>
-      <div className="flex space-x-2">
-        <div>Stages:</div>
-        <div className="flex space-x-2">
-          {contract.enrolmentCriteria[0].cancerStages.map((value) => (
-            <div key={value}>{value}</div>
-          ))}
+      <div className="border-b p-10 flex flex-col space-y-4 bg-slate-50">
+        <div>
+          <h1 className="text-2xl font-bold">Details</h1>
+        </div>
+        <div>
+          <h2 className="text-xl font-medium text-slate-400 mb-1">
+            Enrolment criteria
+          </h2>
+          <div className="flex space-x-2">
+            <div className="font-semibold">Max Age:</div>
+            <div>{contract.enrolmentCriteria[0].maxAge}</div>
+          </div>
+          <div className="flex space-x-2">
+            <div className="font-semibold">Stages:</div>
+            <div className="flex space-x-2">
+              {contract.enrolmentCriteria[0].cancerStages.map((value) => (
+                <div key={value}>{value}</div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
       <div className="flex flex-col mt-4">
-        <div className="mb-4">Patients:</div>
-        <div className="flex space-x-20">
+        <div className="flex space-x-6 items-center justify-center">
           {patients.map((patient) => (
-            <div key={patient.id}>
+            <div key={patient.id} className="border rounded-lg shadow-sm p-6">
               <ContractDetailsPatient
                 name={patient.name}
                 age={patient.age}

@@ -1,12 +1,9 @@
 import { ChangeEvent, FormEvent, useState } from "react";
-import {
-  CREATE_PATIENTS,
-  GET_BRANDED_PRODUCTS,
-  GET_PATIENTS,
-} from "../queries";
+import { GET_BRANDED_PRODUCTS, GET_PATIENTS } from "../queries";
 import { APIBrandedProducts, APIPatients } from "../interfaces";
 import { v4 as uuidv4 } from "uuid";
 import { useMutation, useQuery } from "@apollo/client";
+import { CREATE_PATIENTS } from "../mutations";
 
 function PatientForm() {
   const {
@@ -129,12 +126,17 @@ function PatientForm() {
 
   return (
     <div className="flex flex-col space-y-6">
-      <div>
-        <form className="flex flex-col space-y-2" onSubmit={handleSubmit}>
-          <div className="flex space-x-4">
-            <label htmlFor="name">Patient Name:</label>
+      <div className=" border rounded p-10 shadow-sm bg-slate-100">
+        <form className="w-1/3 mx-auto flex flex-col" onSubmit={handleSubmit}>
+          <div>
+            <label
+              htmlFor="name"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            >
+              Patient Name:
+            </label>
             <input
-              className="border border-slate-700 rounded-mg"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
               type="text"
               id="name"
               name="name"
@@ -142,10 +144,15 @@ function PatientForm() {
               onChange={handleInputChange}
             />
           </div>
-          <div className="flex space-x-4">
-            <label htmlFor="age">Age:</label>
+          <div>
+            <label
+              htmlFor="age"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            >
+              Age:
+            </label>
             <input
-              className="border border-slate-700 rounded-mg"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
               type="number"
               min={1}
               id="age"
@@ -154,10 +161,15 @@ function PatientForm() {
               onChange={handleInputChange}
             />
           </div>
-          <div className="flex space-x-4">
-            <label htmlFor="cancerStage">Cancer Stage:</label>
+          <div>
+            <label
+              htmlFor="cancerStage"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            >
+              Cancer Stage:
+            </label>
             <input
-              className="border border-slate-700 rounded-mg"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
               type="number"
               min={0}
               id="cancerStage"
@@ -166,10 +178,15 @@ function PatientForm() {
               onChange={handleInputChange}
             />
           </div>
-          <div className="flex space-x-4">
-            <label htmlFor="osInfo">OS Info (months):</label>
+          <div>
+            <label
+              htmlFor="osInfo"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            >
+              OS Info (months):
+            </label>
             <input
-              className="border border-slate-700 rounded-mg"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
               type="number"
               min={1}
               id="osInfo"
@@ -178,10 +195,15 @@ function PatientForm() {
               onChange={handleInputChange}
             />
           </div>
-          <div className="flex space-x-4">
-            <label htmlFor="pfsInfo">PFS Info (months):</label>
+          <div>
+            <label
+              htmlFor="pfsInfo"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            >
+              PFS Info (months):
+            </label>
             <input
-              className="border border-slate-700 rounded-mg"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
               type="number"
               min={1}
               id="pfsInfo"
@@ -190,10 +212,15 @@ function PatientForm() {
               onChange={handleInputChange}
             />
           </div>
-          <div className="flex space-x-4">
-            <label htmlFor="selectedProductID">Product:</label>
+          <div>
+            <label
+              htmlFor="selectedProductID"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            >
+              Product:
+            </label>
             <select
-              className="border border-slate-700 rounded-mg"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 "
               id="selectedProductID"
               name="selectedProductID"
               value={formData.selectedProductID}
@@ -207,10 +234,15 @@ function PatientForm() {
               ))}
             </select>
           </div>
-          <div className="flex space-x-4">
-            <label htmlFor="startDate">Starting Date:</label>
+          <div>
+            <label
+              htmlFor="startDate"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            >
+              Starting Date:
+            </label>
             <input
-              className="border border-slate-700 rounded-mg"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
               type="date"
               id="startDate"
               name="startDate"
@@ -219,7 +251,7 @@ function PatientForm() {
             />
           </div>
           <button
-            className="bg-slate-700 text-slate-100"
+            className="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mt-6"
             type="submit"
             disabled={createPatientLoading}
           >
@@ -228,31 +260,31 @@ function PatientForm() {
           {createPatientError && <p>Error: {createPatientError.message}</p>}
         </form>
       </div>
-      <div className="flex space-x-6">
+      <div className="flex space-x-6 items-center justify-center">
         {patients.map((patient) => (
-          <div key={patient.id}>
+          <div key={patient.id} className="border rounded-lg shadow-sm p-6">
             <div className="flex space-x-2">
-              <div>ID:</div>
+              <div className="font-semibold">ID:</div>
               <div>{patient.id}</div>
             </div>
             <div className="flex space-x-2">
-              <div>Name:</div>
+              <div className="font-semibold">Name:</div>
               <div>{patient.name}</div>
             </div>
             <div className="flex space-x-2">
-              <div>Age:</div>
+              <div className="font-semibold">Age:</div>
               <div>{patient.age}</div>
             </div>
             <div className="flex space-x-2">
-              <div>Cancer Stage:</div>
+              <div className="font-semibold">Cancer Stage:</div>
               <div>{patient.cancerStage}</div>
             </div>
             <div className="flex space-x-2">
-              <div>OS Info:</div>
+              <div className="font-semibold">OS Info:</div>
               <div>{patient.osInfo}</div>
             </div>
             <div className="flex space-x-2">
-              <div>PFS Info:</div>
+              <div className="font-semibold">PFS Info:</div>
               <div>{patient.pfsInfo}</div>
             </div>
           </div>

@@ -2,15 +2,15 @@ import { Link } from "react-router-dom";
 
 function Nav() {
   return (
-    <nav>
-      <ul className="flex space-x-4 justify-center">
-        <li>
+    <nav className="border-b-2">
+      <ul className="flex space-x-10 justify-center p-6">
+        <li className="font-bold text-lg">
           <Link to="/">Home</Link>
         </li>
-        <li>
+        <li className="font-bold text-lg">
           <Link to="/patient">Patient</Link>
         </li>
-        <li>
+        <li className="font-bold text-lg">
           <Link to="/contract">Contract</Link>
         </li>
       </ul>

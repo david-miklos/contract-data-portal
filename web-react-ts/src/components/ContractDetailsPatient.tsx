@@ -62,65 +62,65 @@ function ContractDetailsPatient({
     <>
       <div className="flex flex-col space-y-2">
         <div className="flex space-x-2">
-          <div>Name:</div>
+          <div className="font-semibold">Name:</div>
           <div>{name}</div>
         </div>
         <div className="flex space-x-2">
-          <div>Age:</div>
+          <div className="font-semibold">Age:</div>
           <div>{age}</div>
         </div>
         <div className="flex space-x-2">
-          <div>Cancer stage:</div>
+          <div className="font-semibold">Cancer stage:</div>
           <div>{cancerStage}</div>
         </div>
         <div className="flex space-x-2">
-          <div>OS Info:</div>
+          <div className="font-semibold">OS Info:</div>
           <div>{patientOSInfo}</div>
         </div>
         <div className="flex space-x-2">
-          <div>PFS Info:</div>
+          <div className="font-semibold">PFS Info:</div>
           <div>{patientPFSInfo}</div>
         </div>
         <div className="flex space-x-2">
-          <div>Start Date:</div>
+          <div className="font-semibold">Start Date:</div>
           <div>{startDate.toLocaleString()}</div>
         </div>
         <div className="flex space-x-2">
-          <div>Product name:</div>
+          <div className="font-semibold">Product name:</div>
           <div>{productName}</div>
         </div>
         <div className="flex space-x-2">
-          <div>Product OS Info:</div>
+          <div className="font-semibold">Product OS Info:</div>
           <div>{productOSInfo}</div>
         </div>
         <div className="flex space-x-2">
-          <div>Product PFS Info:</div>
+          <div className="font-semibold">Product PFS Info:</div>
           <div>{productPFSInfo}</div>
         </div>
         <div className="flex space-x-2">
-          <div>Medicinal product:</div>
+          <div className="font-semibold">Medicinal product:</div>
           <div>{medicinalProductName}</div>
         </div>
         <div className="flex space-x-2">
-          <div>Medicinal product units:</div>
+          <div className="font-semibold">Medicinal product units:</div>
           <div>{units}</div>
         </div>
         <div className="flex space-x-2">
-          <div>Medicinal product base price: </div>
+          <div className="font-semibold">Medicinal product base price: </div>
           <div>
             CHF
             {basePrice}
           </div>
         </div>
         <div className="flex space-x-2">
-          <div>Payable amount: </div>
+          <div className="font-semibold">Payable amount: </div>
           <div>
             CHF
             {payableAmount}
           </div>
         </div>
         <div className="flex space-x-2">
-          <div>Refundable amount: </div>
+          <div className="font-semibold">Refundable amount: </div>
           <div>
             CHF
             {refundableAmount}
