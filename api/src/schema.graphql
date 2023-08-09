@@ -1,6 +1,8 @@
 type BrandedProduct {
   id: String!
   name: String!
+  osInfo: Int!
+  pfsInfo: Int!
   medicinalProducts: [MedicinalProduct!]!
     @relationship(type: "BELONGS_TO_PRODUCT", direction: IN)
   treatment: [Treatment!]! @relationship(type: "USES_PRODUCT", direction: IN)
@@ -12,7 +14,6 @@ type MedicinalProduct {
   packSizes: [PackSize!]! @relationship(type: "HAS_PACK_SIZE", direction: OUT)
   id: String!
   name: String!
-  pricings: [Pricing!]! @relationship(type: "PRICED_WITH", direction: OUT)
 }
 
 type OS_Info {
@@ -38,11 +39,10 @@ type PackSize {
 type Patient {
   age: Int!
   cancerStage: Int!
-  osInfos: [OS_Info!]! @relationship(type: "HAS_OS_INFO", direction: OUT)
-  pfsInfos: [PFS_Info!]! @relationship(type: "HAS_PFS_INFO", direction: OUT)
+  osInfo: Int
+  pfsInfo: Int
   id: String!
-  name: String
-  stage: Int
+  name: String!
   treatments: [Treatment!]!
     @relationship(type: "UNDERGOES_TREATMENT", direction: OUT)
   contracts: [Contract] @relationship(type: "MATCHED_TO", direction: OUT)
@@ -54,8 +54,8 @@ type Contract {
     @relationship(type: "ENROLLED_UNDER", direction: OUT)
   id: String!
   parties: [Party!]! @relationship(type: "PARTY_INVOLVED", direction: OUT)
-  patientsMatchedTo: [Patient!]!
-    @relationship(type: "MATCHED_TO", direction: IN)
+  patients: [Patient] @relationship(type: "MATCHED_TO", direction: IN)
+  pricings: [Pricing!]! @relationship(type: "PRICED_WITH", direction: OUT)
 }
 
 type EnrolmentCriteria {
@@ -72,13 +72,12 @@ type Party {
 }
 
 type Pricing {
-  OSAfter12Months: Float!
-  PFSAfter9Months: Float!
+  OSAfter: Float!
+  PFSAfter: Float!
   id: String!
-  medicinalProducts: [MedicinalProduct!]!
-    @relationship(type: "PRICED_WITH", direction: IN)
-  noOSBefore12Months: Float!
-  noPFSBefore9Months: Float!
+  contracts: [Contract!]! @relationship(type: "PRICED_WITH", direction: IN)
+  noOSBefore: Float!
+  noPFSBefore: Float!
 }
 
 type Treatment {

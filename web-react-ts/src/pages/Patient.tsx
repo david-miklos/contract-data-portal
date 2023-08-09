@@ -1,6 +1,10 @@
 import { ChangeEvent, FormEvent, useState } from "react";
-import { CREATE_PATIENTS, GET_BRANDED_PRODUCTS, GET_PATIENTS } from "./queries";
-import { APIBrandedProducts, APIPatients } from "./interfaces";
+import {
+  CREATE_PATIENTS,
+  GET_BRANDED_PRODUCTS,
+  GET_PATIENTS,
+} from "../queries";
+import { APIBrandedProducts, APIPatients } from "../interfaces";
 import { v4 as uuidv4 } from "uuid";
 import { useMutation, useQuery } from "@apollo/client";
 
@@ -70,6 +74,8 @@ function PatientForm() {
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
+    console.log(formData);
+
     if (
       formData.name &&
       formData.age !== null &&
@@ -86,6 +92,8 @@ function PatientForm() {
               age: parseInt(formData.age),
               cancerStage: 0,
               name: formData.name,
+              osInfo: parseInt(formData.osInfo),
+              pfsInfo: parseInt(formData.pfsInfo),
               treatments: {
                 create: {
                   id: uuidv4(),
@@ -94,12 +102,6 @@ function PatientForm() {
                     connect: { where: { id: formData.selectedProductID } },
                   },
                 },
-              },
-              osInfos: {
-                create: { id: uuidv4(), duration: parseInt(formData.osInfo) },
-              },
-              pfsInfos: {
-                create: { id: uuidv4(), duration: parseInt(formData.pfsInfo) },
               },
             },
           },
@@ -126,7 +128,7 @@ function PatientForm() {
   };
 
   return (
-    <div>
+    <div className="flex flex-col space-y-6">
       <div>
         <form className="flex flex-col space-y-2" onSubmit={handleSubmit}>
           <div className="flex space-x-4">
@@ -226,11 +228,14 @@ function PatientForm() {
           {createPatientError && <p>Error: {createPatientError.message}</p>}
         </form>
       </div>
-      <div>
+      <div className="flex space-x-6">
         {patients.map((patient) => (
           <div key={patient.id}>
             <div>{patient.name}</div>
             <div>{patient.id}</div>
+            <div>{patient.cancerStage}</div>
+            <div>{patient.osInfo}</div>
+            <div>{patient.pfsInfo}</div>
           </div>
         ))}
       </div>

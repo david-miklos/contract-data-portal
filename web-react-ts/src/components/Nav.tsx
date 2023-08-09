@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 function Nav() {
   return (
     <nav>
-      <ul>
+      <ul className="flex space-x-4 justify-center">
         <li>
           <Link to="/">Home</Link>
         </li>
