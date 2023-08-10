@@ -45,7 +45,7 @@ function ContractDetailsPatient({
     // OS occurred after 12  months
     payablePercentage = OSAfter;
   } else if (patientPFSInfo >= productPFSInfo) {
-    // PFS occurred after productPFSInfo months
+    // PFS occurred after 9  months
     payablePercentage = PFSAfter;
   } else {
     // Neither OS nor PFS occurred within their respective timeframes
