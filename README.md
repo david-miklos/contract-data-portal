@@ -4,6 +4,18 @@
 
 ![image](https://github.com/david-miklos/contract-data-portal/assets/48122593/c4e9c672-a479-4885-9af7-522eda417bde)
 
+## Patient page
+
+![image](https://github.com/david-miklos/contract-data-portal/assets/48122593/3a71ca98-f528-4fd2-bcc6-f645e3ac00c7)
+
+## Contract page
+
+![image](https://github.com/david-miklos/contract-data-portal/assets/48122593/276bb93c-1991-47fc-842b-cf7aa6e7a837)
+
+## Contract details page
+
+![image](https://github.com/david-miklos/contract-data-portal/assets/48122593/675d6694-858d-4880-bce8-c0597c7bd2bb)
+
 ## Contract part features:
 
 - There is a screen to create a contract.
